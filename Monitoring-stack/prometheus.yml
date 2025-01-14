@@ -34,3 +34,7 @@ scrape_configs:
     static_configs:
       - targets: ['${OPENSEARCH_TARGET}']
 
+  - job_name: 'pyroscope'
+    static_configs:
+      - targets: ['{$PYROSCOPE_TARGET}']
+

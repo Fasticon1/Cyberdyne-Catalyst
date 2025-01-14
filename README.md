@@ -1,2 +1,2 @@
 # AI-Stack
-Docker Compose repo for my local learning rig
+Docker Compose repo for local learning rig
