@@ -1,0 +1,114 @@
+services:
+  # Grafana Service
+  grafana:
+    image: grafana/grafana-oss:main
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+     - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+     - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    volumes:
+      - /mnt/VM1/grafana:/var/lib/grafana
+    ports:
+      - "3300:3000"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '1.0'
+        reservations:
+          memory: 1g
+          cpus: '0.5'
+
+  # Prometheus Service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - /mnt/VM1/prometheus:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9191:9090"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '1.0'
+        reservations:
+          memory: 1g
+          cpus: '0.5'
+          
+# Loki Service (Log aggregation)
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    volumes:
+      - /mnt/VM1/loki/chunks:/loki/chunks
+      - /mnt/VM1/loki/cache:/loki/cache
+      - ${LOKI_CONFIG_PATH}:/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    deploy:
+      resources:
+        limits:
+          memory: 3g
+          cpus: '2.0'
+        reservations:
+          memory: 1g
+          cpus: '1.0'
+
+  # Promtail Service (Log shipping)
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - /mnt/VM1/promtail:/var/lib/promtail
+      - ${PROMTAIL_CONFIG_PATH}:/etc/promtail/promtail-config.yaml
+    ports:
+      - "3500:3500"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '1.0'
+        reservations:
+          memory: 1g
+          cpus: '0.5'
+          
+# cAdvisor Service (Container monitoring)
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - "8150:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+          cpus: '0.5'
+        reservations:
+          memory: 250m
+          cpus: '0.25'
+
+volumes:
+  grafana_data:
+  prometheus_data:
+  loki_data:
+  promtail_data:
+  cadvisor_data:
