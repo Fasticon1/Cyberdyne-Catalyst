@@ -106,6 +106,34 @@ services:
           memory: 250m
           cpus: '0.25'
 
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=${OPENSEARCH_DISCOVERY_TYPE}
+      - bootstrap.memory_lock=${OPENSEARCH_BOOTSTRAP_MEMORY_LOCK}
+      - OPENSEARCH_JAVA_OPTS=${OPENSEARCH_JAVA_OPTS}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ${OPENSEARCH_DATA_VOLUME}:/usr/share/opensearch/data
+      - ${OPENSEARCH_LOGS_VOLUME}:/usr/share/opensearch/logs
+    ports:
+      - "${OPENSEARCH_HTTP_PORT}:9200"
+      - "${OPENSEARCH_TRANSPORT_PORT}:9300"
+    deploy:
+      resources:
+        limits:
+          memory: ${OPENSEARCH_MEMORY_LIMIT}
+          cpus: ${OPENSEARCH_CPU_LIMIT}
+        reservations:
+          memory: ${OPENSEARCH_MEMORY_RESERVATION}
+          cpus: ${OPENSEARCH_CPU_RESERVATION}
+
+
 volumes:
   grafana_data:
   prometheus_data:
