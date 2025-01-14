@@ -115,18 +115,10 @@ services:
 
 volumes:
   openwebui-data:
-    driver: local
   flowise-data:
-    driver: local
   unstructuredapi-data:
-    driver: local
   tensorflow-data:
-    driver: local
   torchserve-data:
-    driver: local
   langchain-data:
-    driver: local
   haystack-data:
-    driver: local
   mlflow-data:
-    driver: local
