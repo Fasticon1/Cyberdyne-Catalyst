@@ -1,0 +1,27 @@
+server:
+  http_listen_port: ${PROMTAIL_HTTP_LISTEN_PORT}
+  grpc_listen_port: ${PROMTAIL_GRPC_LISTEN_PORT}
+
+positions:
+  filename: ${PROMTAIL_POSITIONS_FILENAME}
+
+clients:
+  - url: ${LOKI_PUSH_URL}
+
+scrape_configs:
+
+  - job_name: 'system_logs'
+    static_configs:
+      - targets:
+          - ${SYSTEM_LOGS_TARGET}
+        labels:
+          job: varlogs
+          __path__: ${SYSTEM_LOGS_PATH}
+
+  - job_name: 'pfsense_logs'
+    static_configs:
+      - targets:
+          - ${PFSENSE_LOGS_TARGET}
+        labels:
+          job: pfsense
+          __path__: ${PFSENSE_LOGS_PATH}

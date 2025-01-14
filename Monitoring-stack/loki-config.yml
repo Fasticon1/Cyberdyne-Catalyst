@@ -1,0 +1,59 @@
+auth_enabled: false
+
+server:
+  http_listen_port: ${LOKI_HTTP_LISTEN_PORT}
+
+common:
+  path_prefix: ${LOKI_PATH_PREFIX}
+  ring:
+    instance_addr: ${LOKI_INSTANCE_ADDR}
+    kvstore:
+      store: ${LOKI_KVSTORE}
+    replication_factor: ${LOKI_REPLICATION_FACTOR}
+
+schema_config:
+  configs:
+    - from: ${LOKI_SCHEMA_FROM_1}
+      store: ${LOKI_SCHEMA_STORE_1}
+      object_store: ${LOKI_OBJECT_STORE_1}
+      schema: ${LOKI_SCHEMA_VERSION_1}
+      index:
+        prefix: ${LOKI_INDEX_PREFIX_1}
+        period: ${LOKI_INDEX_PERIOD_1}
+    - from: ${LOKI_SCHEMA_FROM_2}
+      store: ${LOKI_SCHEMA_STORE_2}
+      object_store: ${LOKI_OBJECT_STORE_2}
+      schema: ${LOKI_SCHEMA_VERSION_2}
+      index:
+        prefix: ${LOKI_INDEX_PREFIX_2}
+        period: ${LOKI_INDEX_PERIOD_2}
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: ${LOKI_BOLTDB_ACTIVE_DIR}
+    cache_location: ${LOKI_BOLTDB_CACHE_LOCATION}
+    cache_ttl: ${LOKI_BOLTDB_CACHE_TTL}
+  filesystem:
+    directory: ${LOKI_FILESYSTEM_DIR}
+
+compactor:
+  working_directory: ${LOKI_COMPACTOR_WORKING_DIR}
+  retention_enabled: ${LOKI_COMPACTOR_RETENTION_ENABLED}
+  retention_delete_delay: ${LOKI_COMPACTOR_RETENTION_DELETE_DELAY}
+  delete_request_store: ${LOKI_DELETE_REQUEST_STORE}
+
+ingester:
+  chunk_idle_period: ${LOKI_INGESTER_CHUNK_IDLE_PERIOD}
+  chunk_retain_period: ${LOKI_INGESTER_CHUNK_RETAIN_PERIOD}
+distributor:
+  ring:
+    kvstore:
+      store: ${LOKI_KVSTORE}
+
+limits_config:
+  allow_structured_metadata: ${LOKI_ALLOW_STRUCTURED_METADATA}
+  max_streams_per_user: ${LOKI_MAX_STREAMS_PER_USER}
+  max_chunks_per_query: ${LOKI_MAX_CHUNKS_PER_QUERY}
+  max_query_length: ${LOKI_MAX_QUERY_LENGTH}
+  reject_old_samples: ${LOKI_REJECT_OLD_SAMPLES}
+  reject_old_samples_max_age: ${LOKI_REJECT_OLD_SAMPLES_MAX_AGE}

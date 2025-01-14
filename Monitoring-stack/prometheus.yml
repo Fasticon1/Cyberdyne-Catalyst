@@ -1,0 +1,31 @@
+global:
+  scrape_interval: ${PROMETHEUS_SCRAPE_INTERVAL}
+  evaluation_interval: ${PROMETHEUS_EVALUATION_INTERVAL}
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['${PROMETHEUS_TARGET}']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['${CADVISOR_TARGET}']
+    relabel_configs:
+      - source_labels: [__meta_docker_container_name]
+        target_label: container
+
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['${NODE_EXPORTER_TARGET}']
+
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['${LOKI_TARGET}']
+
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['${GRAFANA_TARGET}']
+
+  - job_name: 'gpu_metrics'
+    static_configs:
+      - targets: ['${GPU_METRICS_TARGET}']
