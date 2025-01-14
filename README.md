@@ -1,6 +1,6 @@
 # Cyberdyne-Catalyst
 
-Docker Compose repo for local learning rig
+Docker Compose repo for local AI learning rig
 
 
 
