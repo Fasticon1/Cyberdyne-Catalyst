@@ -3,7 +3,7 @@ services:
     image: openwebui/latest
     container_name: openwebui
     ports:
-      - "3000:8080"  # Port mapping for OpenWebUI
+      - "3000:8080"
     environment:
       WEBUI_ENV: ${WEBUI_ENV}
     restart: unless-stopped
@@ -19,7 +19,7 @@ services:
     image: flowise/flowise:latest
     container_name: flowise
     ports:
-      - "3101:3000"  # Port for Flowise UI
+      - "3101:3000"  
     restart: unless-stopped
     deploy:
       resources:
@@ -33,7 +33,7 @@ services:
     image: unstructuredio/api:latest
     container_name: unstructuredapi
     ports:
-      - "3301:8000"  # API port for document parsing
+      - "3301:8000"
     restart: unless-stopped
     deploy:
       resources:
@@ -47,7 +47,7 @@ services:
     image: tensorflow/serving:latest
     container_name: tensorflow_serving
     ports:
-      - "8501:8501"  # REST API port for TensorFlow Serving
+      - "8501:8501"
     restart: unless-stopped
     deploy:
       resources:
@@ -61,7 +61,7 @@ services:
     image: pytorch/torchserve:latest
     container_name: torchserve
     ports:
-      - "8081:8080"  # REST API port for TorchServe
+      - "8081:8080"
     restart: unless-stopped
     deploy:
       resources:
@@ -75,7 +75,7 @@ services:
     image: langchain/langchain:latest
     container_name: langchain
     ports:
-      - "3400:3400"  # Port for LangChain
+      - "3400:3400"
     restart: unless-stopped
     deploy:
       resources:
@@ -89,7 +89,7 @@ services:
     image: deepset/haystack:latest
     container_name: haystack
     ports:
-      - "3500:8000"  # API port for Haystack
+      - "3500:8000"
     restart: unless-stopped
     deploy:
       resources:
@@ -103,7 +103,7 @@ services:
     image: mlflow/mlflow:latest
     container_name: mlflow
     ports:
-      - "3600:5000"  # MLflow UI port
+      - "3600:5000"
     restart: unless-stopped
     deploy:
       resources:
